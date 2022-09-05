@@ -20,14 +20,6 @@
                 </ul>
             <% } else { %>
                 <h1>No Products in Cart!</h1>
-            <% } 
-            if(products.length>0) { %>
-                <div style="text-align: center;">
-                    <form action="/order" method="POST">
-                        <button type="submit" class="btn">Place Order</button>
-                    </form>
-                </div>
-            <% }
-            %>
+            <% } %>
         </main>
         <%- include('../includes/end.ejs') %>

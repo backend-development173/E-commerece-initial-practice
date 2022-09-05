@@ -2,14 +2,20 @@ const query = require('express/lib/middleware/query');
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
-  res.render('admin/edit-product', {
-    pageTitle: 'Add Product',
-    path: '/admin/add-product',
-    editing: false,
-    formsCSS: true,
-    productCSS: true,
-    activeAddProduct: true
-  });
+  Product.findAll().then(products=>{
+    res.render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      prods:products,
+      path: '/admin/add-product',
+      editing: false,
+      formsCSS: true,
+      productCSS: true,
+      activeAddProduct: true
+    });
+  }).catch(err=>{
+    console.log(err);
+  })
+
 };
 
 exports.postAddProduct = (req, res, next) => {
@@ -38,17 +44,20 @@ exports.getEditProduct= (req,res,next)=>{
     return res.redirect('/')
   }
   const prodId= req.params.productId;
-  req.user.getProducts({where:{id:prodId}})
+  
+  req.user.getProducts({where:{id:prodId}}) /// getProducts 
   .then((products)=>{
-      const product=products[0]
-      if(!product){
+    console.log(products[0].title)
+     // const product=products[0]
+    
+      if(!products[0]){
         return res.redirect('/')
       }
       res.render('admin/edit-product',{
       pageTitle:'Edit Product',
       path:'/admin/edit-product',
       editing:editMode,
-      product:product
+      product:products[0],
     })
   
   })
